@@ -1,9 +1,11 @@
+import _ from 'lodash';
 import axios from 'axios';
 
 export default class Axios {
   constructor(http) {
     this.instance = http.axios || axios.create(http);
     this.setAuthentication(http.access_token);
+    this.setCustomHeaders(http.customHeaders);
 
     this.instance.interceptors.response.use(
       response => http.onResponse(response, this.instance),
@@ -13,9 +15,20 @@ export default class Axios {
     return this.instance;
   }
 
+  setCustomHeaders(customHeaders){
+    if (!customHeaders) return;
+    const isFunction = typeof customHeaders
+    "function";
+    console.log("isFunction", isFunction)
+    const headersObject = isFunction ? customHeaders() : customHeaders;
+    _.forOwn(headersObject, (value, key)=>{
+      this.instance.defaults.headers.common[key] = value;
+    })
+  }
+
   setAuthentication(token) {
     if (!token) return;
-    const isFunction = typeof token 
+    const isFunction = typeof token
     "function";
     const tokenStr = isFunction ? token() : token;
 
