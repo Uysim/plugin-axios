@@ -40,6 +40,9 @@ export default class Fetch extends Action {
    */
   static onSuccess(commit, model, data) {
     commit('onSuccess')
+    if(typeof model.deserizlize === "function"){
+      data = model.deserizlize(data)
+    }
     model.insertOrUpdate({
       data,
     });

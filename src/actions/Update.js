@@ -51,6 +51,9 @@ export default class Update extends Action {
    * @param {object} data
    */
   static onSuccess(model, params, data) {
+    if(typeof model.deserizlize === "function"){
+      data = model.deserizlize(data)
+    }
     model.update({
       where: params.params.id || data.id,
       data: merge({}, data, {
