@@ -50,9 +50,10 @@ export default class Update extends Action {
    * On Successful Request Method
    * @param {object} model
    * @param {object} params
-   * @param {object} data
+   * @param {object} response
    */
-  static onSuccess(model, params, data) {
+  static onSuccess(model, params, response) {
+    const data = model.axiosDenormalize(response);
     return model.update({
       where: params.params.id || data.id,
       data: merge({}, data, {
