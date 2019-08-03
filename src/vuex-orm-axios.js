@@ -30,6 +30,11 @@ export default class VuexOrmAxios {
     context.components.Actions.$create = Create.call.bind(Create);
     context.components.Actions.$update = Update.call.bind(Update);
     context.components.Actions.$delete = Delete.call.bind(Delete);
+    if(!context.components.Actions.axiosDenormalize){
+      context.components.Actions.axiosDenormalize = (response)=>{
+        return { data: response.data }
+      }
+    }
   }
 
   /**

@@ -38,13 +38,12 @@ export default class Get extends Action {
    * On Successful Request Method
    * @param {object} commit
    * @param {object} model
-   * @param {object} data
+   * @param {object} response
    */
-  static onSuccess(commit, model, data) {
-    commit('onSuccess')
-    return model.insertOrUpdate({
-      data,
-    });
+  static onSuccess(commit, model, response) {
+    commit('onSuccess');
+    const data = model.axiosDenormalize(response);
+    return model.insertOrUpdate(data);
   }
 
   /**
